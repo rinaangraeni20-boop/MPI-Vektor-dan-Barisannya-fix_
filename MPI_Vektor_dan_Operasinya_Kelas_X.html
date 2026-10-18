@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MPI Matematika — Vektor dan Operasinya</title>
+<style>
+:root{--navy:#12304a;--blue:#1769aa;--teal:#0f9d91;--gold:#ffca5c;--paper:#f4f8fb;--ink:#1d2c3a;--muted:#617386;--line:#d8e3ec;--white:#fff;--good:#157347;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(125deg,#12304a,#1769aa);color:#fff;padding:28px 20px 24px}
+.wrap{max-width:1100px;margin:auto}header .eyebrow{letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;font-weight:bold;color:#bfe9f0}
+h1{font-size:clamp(1.8rem,4vw,3rem);line-height:1.12;margin:.45rem 0}header p{max-width:760px;margin:.6rem 0 0;color:#e8f5ff}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.pill{border:1px solid #ffffff65;border-radius:999px;padding:5px 11px;font-size:.85rem}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 3px 10px #12304a0b}
+.navinner{display:flex;gap:6px;overflow:auto;padding:9px 12px;max-width:1100px;margin:auto}
+nav button{white-space:nowrap;border:0;background:#edf4f8;color:var(--navy);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:bold}
+nav button.active,nav button:hover{background:var(--blue);color:white}
+main{max-width:1100px;margin:22px auto;padding:0 14px 40px}
+section.panel{display:none;background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);box-shadow:0 8px 24px #12304a08}
+section.panel.active{display:block}
+h2{color:var(--navy);margin-top:0;font-size:1.65rem}h3{color:var(--blue);margin-bottom:8px}
+.lead{font-size:1.08rem;color:#40586c}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfdff}
+.formula{background:#eaf5fb;border-left:4px solid var(--blue);padding:12px 14px;border-radius:8px;font-size:1.06rem;font-weight:bold;margin:10px 0}
+.callout{background:#fff7df;border:1px solid #f5dfa0;border-radius:12px;padding:14px}
+button.action{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px 15px;font-weight:bold;cursor:pointer}
+button.secondary{background:#eaf1f6;color:var(--navy);border:1px solid var(--line)}
+button.action:hover{filter:brightness(.94)}
+label{display:block;font-weight:bold;margin:9px 0 4px}
+input,select{font:inherit;padding:9px 10px;border:1px solid #bdccd8;border-radius:8px;max-width:100%}
+input[type=number]{width:90px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+canvas{width:100%;height:350px;border:1px solid var(--line);border-radius:12px;background:#fff;display:block}
+.feedback{margin-top:12px;padding:11px;border-radius:9px;display:none}.feedback.good{display:block;background:#e9f7ef;color:var(--good)}.feedback.bad{display:block;background:#fff0ef;color:var(--bad)}
+.question{border:1px solid var(--line);padding:15px;border-radius:12px;margin:12px 0}
+.options label{font-weight:normal;display:flex;gap:8px;align-items:flex-start;margin:7px 0;cursor:pointer}
+.options input{margin-top:5px}
+.progress{height:8px;background:#e8eef3;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;width:0;background:var(--teal);transition:width .2s}
+footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.9rem}
+.small{color:var(--muted);font-size:.92rem}.answer{font-family:monospace;background:#f0f5f8;padding:3px 6px;border-radius:5px}
+@media(max-width:600px){canvas{height:280px}.navinner{padding:8px}nav button{padding:9px 11px}}
+@media print{nav,.no-print,button{display:none!important}section.panel{display:block!important;box-shadow:none;margin-bottom:18px;break-inside:avoid}body{background:white}header{background:#fff;color:#111;padding:12px}header p,header .eyebrow{color:#333}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">Media Pembelajaran Interaktif • Matematika Fase E</div>
+<h1>Vektor dan Operasinya</h1>
+<p>Belajar mengenali besar dan arah vektor, membaca komponen, menghitung panjang, serta mencoba operasi vektor melalui contoh dan latihan interaktif.</p>
+<div class="pills"><span class="pill">SMKN 5 Kolaka Utara</span><span class="pill">Kelas X TJKT 2</span><span class="pill">90 menit</span><span class="pill">Discovery Learning</span></div>
+</div></header>
+<nav class="no-print"><div class="navinner">
+<button class="active" data-tab="beranda">Beranda</button><button data-tab="materi">Materi Ringkas</button><button data-tab="eksplorasi">Eksplorasi Vektor</button><button data-tab="latihan">Latihan Interaktif</button><button data-tab="evaluasi">Evaluasi</button><button data-tab="refleksi">Refleksi</button>
+</div></nav>
+<main>
+<section id="beranda" class="panel active">
+<h2>Selamat datang!</h2><p class="lead">Mari temukan bagaimana matematika menyatakan perpindahan yang memiliki <b>besar</b> dan <b>arah</b>.</p>
+<div class="callout"><b>Pertanyaan pemantik</b><br>Dua orang berjalan masing-masing 5 meter. Orang pertama berjalan ke timur, orang kedua ke barat. Apakah perpindahan mereka sama? Jelaskan alasannya.</div>
+<div class="grid" style="margin-top:16px">
+<div class="card"><h3>🎯 Tujuan belajar</h3><ul><li>Membedakan skalar dan vektor.</li><li>Menentukan panjang dan komponen vektor.</li><li>Menghitung operasi dasar vektor.</li><li>Memeriksa jawaban dengan gambar atau komponen.</li></ul></div>
+<div class="card"><h3>🧭 Cara menggunakan MPI</h3><ol><li>Buka menu <b>Materi Ringkas</b>.</li><li>Coba geser nilai komponen pada <b>Eksplorasi Vektor</b>.</li><li>Kerjakan latihan dan evaluasi.</li><li>Baca umpan balik lalu perbaiki jawaban.</li></ol></div>
+<div class="card"><h3>💡 Ingat</h3><p>Vektor memiliki besar dan arah. Contoh: perpindahan 3 satuan ke kanan dan 2 satuan ke atas ditulis <span class="answer">(3, 2)</span>.</p><button class="action" onclick="go('materi')">Mulai belajar →</button></div>
+</div>
+<p class="small">Petunjuk guru: MPI ini dapat dibuka secara luring di browser. Tampilkan melalui PID/IFP atau proyektor, lalu diskusikan jawaban bersama siswa.</p>
+</section>
+<section id="materi" class="panel">
+<h2>Materi Ringkas</h2><p class="lead">Pelajari rumus inti berikut sebelum mencoba eksplorasi dan latihan.</p>
+<div class="grid">
+<div class="card"><h3>1. Pengertian vektor</h3><p>Vektor adalah besaran yang mempunyai <b>besar dan arah</b>. Vektor dapat digambar sebagai panah atau ditulis dalam bentuk komponen.</p><p>Contoh: <span class="answer">v = (3, 2)</span> berarti 3 satuan mendatar ke kanan dan 2 satuan ke atas.</p></div>
+<div class="card"><h3>2. Panjang vektor</h3><div class="formula">Jika v = (a, b), maka |v| = √(a² + b²)</div><p>Contoh: v = (3, 4), maka |v| = √(9 + 16) = √25 = <b>5</b>.</p></div>
+<div class="card"><h3>3. Komponen dari dua titik</h3><div class="formula">PQ = (x₂ − x₁, y₂ − y₁)</div><p>Contoh: P(1, 2), Q(5, 5). Maka PQ = (5−1, 5−2) = <b>(4, 3)</b>.</p></div>
+<div class="card"><h3>4. Penjumlahan</h3><div class="formula">(a, b) + (c, d) = (a+c, b+d)</div><p>Contoh: (2, 1) + (3, 4) = <b>(5, 5)</b>.</p></div>
+<div class="card"><h3>5. Pengurangan</h3><div class="formula">(a, b) − (c, d) = (a−c, b−d)</div><p>Contoh: (5, 3) − (2, 1) = <b>(3, 2)</b>. Pengurangan dapat dipandang sebagai penjumlahan dengan vektor berlawanan arah.</p></div>
+<div class="card"><h3>6. Perkalian dengan skalar</h3><div class="formula">k(a, b) = (ka, kb)</div><p>Contoh: 2(2, −1) = <b>(4, −2)</b>. Jika skalar negatif, arah vektor berbalik.</p></div>
+<div class="card"><h3>7. Perkalian titik (dot product)</h3><div class="formula">(a, b) · (c, d) = ac + bd</div><p>Contoh: (2, 3) · (4, −1) = 8 − 3 = <b>5</b>. Hasil dot product adalah <b>skalar</b>, bukan vektor.</p></div>
+<div class="card"><h3>8. Skalar dan vektor</h3><p><b>Skalar:</b> hanya memiliki besar, misalnya suhu dan massa.</p><p><b>Vektor:</b> memiliki besar dan arah, misalnya perpindahan dan gaya.</p></div>
+</div>
+<div class="callout" style="margin-top:16px"><b>Tips menghindari kesalahan</b><br>• Panjang vektor bukan jumlah komponennya; gunakan rumus Pythagoras.<br>• Komponen dari A ke B adalah koordinat B dikurangi koordinat A.<br>• Pada dot product, kalikan komponen yang bersesuaian lalu jumlahkan.</div>
+</section>
+<section id="eksplorasi" class="panel">
+<h2>Eksplorasi Vektor</h2><p class="lead">Ubah komponen vektor dan lihat perubahan arah serta panjangnya pada bidang koordinat.</p>
+<div class="grid">
+<div class="card"><label for="vx">Komponen mendatar (x)</label><input id="vx" type="range" min="-5" max="5" value="3" oninput="drawVector()"><span id="vxval">3</span>
+<label for="vy">Komponen tegak (y)</label><input id="vy" type="range" min="-5" max="5" value="4" oninput="drawVector()"><span id="vyval">4</span>
+<div class="formula" id="vectorResult">v = (3, 4), |v| = 5</div><p class="small">Ujung panah menunjukkan posisi komponen vektor dari titik asal (0,0).</p></div>
+<div class="card"><canvas id="plane" width="600" height="400" aria-label="Bidang koordinat dan gambar vektor"></canvas><p class="small">Sumbu x mendatar, sumbu y tegak. Panah berawal dari titik (0,0).</p></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Coba operasi komponen</h3>
+<div class="row"><label for="opA">Vektor a</label><input id="ax" type="number" value="2" aria-label="Komponen x vektor a"><input id="ay" type="number" value="3" aria-label="Komponen y vektor a"><label for="op">Operasi</label><select id="op"><option value="add">a + b</option><option value="sub">a − b</option><option value="scale">2a</option><option value="dot">a · b</option></select><label>Vektor b</label><input id="bx" type="number" value="4" aria-label="Komponen x vektor b"><input id="by" type="number" value="-1" aria-label="Komponen y vektor b"><button class="action" onclick="calculateOperation()">Hitung</button></div>
+<div id="opResult" class="formula">Hasil akan muncul di sini.</div></div>
+</section>
+<section id="latihan" class="panel">
+<h2>Latihan Interaktif</h2><p class="lead">Pilih satu jawaban untuk setiap soal, lalu tekan <b>Periksa Jawaban</b>.</p>
+<div id="practice"></div><button class="action" onclick="checkPractice()">Periksa Jawaban</button> <button class="action secondary" onclick="resetPractice()">Ulangi latihan</button><div id="practiceResult" class="feedback"></div>
+</section>
+<section id="evaluasi" class="panel">
+<h2>Evaluasi Mandiri</h2><p class="lead">Kerjakan 6 soal berikut. Setiap jawaban benar bernilai 1 poin.</p>
+<div id="exam"></div><button class="action" onclick="checkExam()">Lihat Nilai</button> <button class="action secondary" onclick="resetExam()">Ulangi evaluasi</button><div id="examResult" class="feedback"></div>
+</section>
+<section id="refleksi" class="panel">
+<h2>Refleksi Pembelajaran</h2><p class="lead">Lengkapi refleksi setelah mempelajari materi.</p>
+<div class="card"><label for="understand">Hari ini saya memahami…</label><textarea id="understand" rows="3" style="width:100%;font:inherit;border:1px solid #bdccd8;border-radius:8px;padding:10px"></textarea><label for="practiceMore">Saya masih perlu berlatih…</label><textarea id="practiceMore" rows="3" style="width:100%;font:inherit;border:1px solid #bdccd8;border-radius:8px;padding:10px"></textarea><label for="confidence">Seberapa yakin pemahaman saya?</label><select id="confidence"><option>Sangat yakin</option><option>Cukup yakin</option><option>Masih perlu bantuan</option></select><div class="row no-print" style="margin-top:12px"><button class="action" onclick="printReflection()">Cetak / Simpan PDF</button><button class="action secondary" onclick="clearReflection()">Kosongkan refleksi</button></div><p class="small">Gunakan fitur cetak browser untuk menyimpan refleksi sebagai PDF atau mencetaknya.</p></div>
+<div class="callout" style="margin-top:16px"><b>Kesimpulan</b><br>Vektor menyatakan besar dan arah. Komponen membantu menghitung panjang serta melakukan operasi vektor dengan tepat. Gambar dan perhitungan dapat saling digunakan untuk memeriksa hasil.</div>
+</section>
+</main><footer>MPI Matematika Kelas X • Vektor dan Operasinya • SMKN 5 Kolaka Utara</footer>
+<script>
+const tabs=[...document.querySelectorAll('nav button')];
+function go(id){tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('section.panel').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:'smooth'});}
+tabs.forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
+function drawVector(){
+ const x=+document.getElementById('vx').value,y=+document.getElementById('vy').value;
+ document.getElementById('vxval').textContent=x;document.getElementById('vyval').textContent=y;
+ document.getElementById('vectorResult').textContent=`v = (${x}, ${y}), |v| = √(${x*x} + ${y*y}) = ${Math.sqrt(x*x+y*y).toFixed(2).replace(/\.00$/,'')}`;
+ const c=document.getElementById('plane'),ctx=c.getContext('2d'),w=c.width,h=c.height,scale=30,ox=w/2,oy=h/2;
+ ctx.clearRect(0,0,w,h);ctx.strokeStyle='#e2eaf0';ctx.lineWidth=1;
+ for(let i=-10;i<=10;i++){ctx.beginPath();ctx.moveTo(ox+i*scale,0);ctx.lineTo(ox+i*scale,h);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*scale);ctx.lineTo(w,oy+i*scale);ctx.stroke();}
+ ctx.strokeStyle='#617386';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(20,oy);ctx.lineTo(w-20,oy);ctx.moveTo(ox,h-15);ctx.lineTo(ox,15);ctx.stroke();
+ ctx.fillStyle='#40586c';ctx.font='14px Arial';ctx.fillText('x',w-22,oy-8);ctx.fillText('y',ox+8,18);ctx.fillText('0',ox+6,oy+16);
+ for(let i=-5;i<=5;i++){if(i!==0){ctx.fillText(i,ox+i*scale-4,oy+17);ctx.fillText(i,ox+7,oy-i*scale+5);}}
+ const ex=ox+x*scale,ey=oy-y*scale;ctx.strokeStyle='#0f9d91';ctx.fillStyle='#0f9d91';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ex,ey);ctx.stroke();
+ const a=Math.atan2(ey-oy,ex-ox),head=12;ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-head*Math.cos(a-.45),ey-head*Math.sin(a-.45));ctx.lineTo(ex-head*Math.cos(a+.45),ey-head*Math.sin(a+.45));ctx.closePath();ctx.fill();
+ ctx.fillStyle='#12304a';ctx.font='bold 15px Arial';ctx.fillText(`(${x}, ${y})`,ex+8,ey-8);
+}
+function calculateOperation(){let ax=+document.getElementById('ax').value||0,ay=+document.getElementById('ay').value||0,bx=+document.getElementById('bx').value||0,by=+document.getElementById('by').value||0,op=document.getElementById('op').value,r;
+if(op==='add')r=`a + b = (${ax+bx}, ${ay+by})`;if(op==='sub')r=`a − b = (${ax-bx}, ${ay-by})`;if(op==='scale')r=`2a = (${2*ax}, ${2*ay})`;if(op==='dot')r=`a · b = (${ax}×${bx}) + (${ay}×${by}) = ${ax*bx+ay*by} (skalar)`;document.getElementById('opResult').textContent=r;}
+const practiceQs=[
+{q:'Panjang vektor v = (3, 4) adalah…',o:['5','7','12','25'],a:0,e:'|v| = √(3² + 4²) = √25 = 5.'},
+{q:'A(1, 2) dan B(5, 5). Komponen AB adalah…',o:['(6, 7)','(4, 3)','(3, 4)','(−4, −3)'],a:1,e:'AB = (5−1, 5−2) = (4, 3).'},
+{q:'(2, 3) + (4, −1) = …',o:['(6, 2)','(−2, 4)','(8, −3)','(6, 4)'],a:0,e:'Jumlahkan komponen yang bersesuaian: (2+4, 3−1) = (6, 2).'},
+{q:'(5, 3) − (2, 1) = …',o:['(7, 4)','(3, 2)','(3, 4)','(−3, −2)'],a:1,e:'Kurangkan komponen yang bersesuaian: (5−2, 3−1) = (3, 2).'},
+{q:'Jika a = (2, −1), maka 2a = …',o:['(2, −2)','(4, −2)','(4, 1)','(0, −2)'],a:1,e:'Kalikan setiap komponen dengan 2: (4, −2).'},
+{q:'(2, 3) · (4, −1) menghasilkan…',o:['Vektor (8, −3)','11','5','−5'],a:2,e:'Dot product = 2×4 + 3×(−1) = 8−3 = 5, berupa skalar.'}
+];
+const examQs=[
+{q:'Dua ciri utama vektor adalah…',o:['Massa dan suhu','Besar dan arah','Panjang dan warna','Nilai dan satuan saja'],a:1},
+{q:'Panjang vektor u = (6, 8) adalah…',o:['2','10','14','48'],a:1},
+{q:'A(2, −1), B(−1, 5). Komponen AB adalah…',o:['(3, 4)','(−3, 6)','(1, 4)','(−1, 5)'],a:1},
+{q:'Jika a = (3, 2) dan b = (−1, 4), maka a + b = …',o:['(2, 6)','(4, −2)','(−3, 8)','(2, 2)'],a:0},
+{q:'Jika a = (3, 2) dan b = (−1, 4), maka a − b = …',o:['(2, 6)','(4, −2)','(−4, 2)','(−3, 8)'],a:1},
+{q:'Untuk a = (3, 2) dan b = (−1, 4), nilai a · b adalah…',o:['(−3, 8)','5','−5','11'],a:1}
+];
+function renderQs(id,qs,name){document.getElementById(id).innerHTML=qs.map((q,i)=>`<div class="question"><b>${i+1}. ${q.q}</b><div class="options">${q.o.map((o,j)=>`<label><input type="radio" name="${name}${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${o}</span></label>`).join('')}</div><div id="${name}fb${i}" class="feedback"></div></div>`).join('');}
+function checkSet(qs,name,resultId,showEach){let score=0,answered=0;qs.forEach((q,i)=>{let sel=document.querySelector(`input[name="${name}${i}"]:checked`),fb=document.getElementById(`${name}fb${i}`);if(sel)answered++;let good=sel&&+sel.value===q.a;if(good)score++;if(showEach){fb.className='feedback '+(good?'good':'bad');fb.textContent=good?'Benar! '+(q.e||'Jawaban tepat.'):(!sel?'Belum dijawab. ':'Belum tepat. ')+(q.e||'Coba ingat kembali rumus dan operasi komponen.');}});let box=document.getElementById(resultId);box.className='feedback '+(score>=qs.length*.7?'good':'bad');box.textContent=`Skor: ${score}/${qs.length} (${Math.round(score/qs.length*100)}%). Terjawab: ${answered}/${qs.length}. `+(score===qs.length?'Hebat, semua jawaban benar!':'Baca pembahasan pada setiap soal, lalu ulangi latihan jika diperlukan.');}
+function checkPractice(){checkSet(practiceQs,'p','practiceResult',true)}
+function checkExam(){checkSet(examQs,'e','examResult',true)}
+function resetPractice(){renderQs('practice',practiceQs,'p');let b=document.getElementById('practiceResult');b.className='feedback';b.textContent='';}
+function resetExam(){renderQs('exam',examQs,'e');let b=document.getElementById('examResult');b.className='feedback';b.textContent='';}
+function printReflection(){window.print()}
+function clearReflection(){document.getElementById('understand').value='';document.getElementById('practiceMore').value='';document.getElementById('confidence').selectedIndex=0}
+renderQs('practice',practiceQs,'p');renderQs('exam',examQs,'e');drawVector();calculateOperation();
+</script>
+</body></html>
